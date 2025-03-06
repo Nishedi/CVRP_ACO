@@ -23,7 +23,7 @@ class MainClass
         int ants = instanceSize;
         double alpha = 0.9, beta = 3.0, rho = 0.7, q = 10.0;
         int maxIterations = instanceSize * instanceSize / 50;
-        maxIterations = 7;
+        maxIterations = 7000;
         int maxTimeACO = 10;
 
         while (true)

@@ -207,7 +207,7 @@ public class AntColony
         double[,] distanceMatrix = cvrp.costMatrix;
         int size = cvrp.costMatrix.GetLength(0);
         int NUM_ANTS = size;
-        bestPath = new int[size];
+        bestPath = new int[size*2];
         bestCost = int.MaxValue;
         double[,] pheromones = new double[size, size];
 
@@ -224,12 +224,11 @@ public class AntColony
 
         for (int i = 0; i < NUM_ANTS; i++)
         {
-            paths[i] = new int[size];
+            paths[i] = new int[size*2];
         }
 
         for (int iteration = 0; iteration < maxIterations; iteration++)
         {
-            Console.WriteLine(iteration);
             for (int ant = 0; ant < NUM_ANTS; ant++)
             {
                 General general = new General();
@@ -240,7 +239,7 @@ public class AntColony
                 paths[ant][0] = startCity;
                 visited[startCity] = true;
 
-                for (int step = 1; step < size; step++)
+                for (int step = 1; visited.Contains(false); step++)
                 {
                     int currentCity = paths[ant][step - 1];
                     int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity);
@@ -254,22 +253,21 @@ public class AntColony
                     }
 
                     paths[ant][step] = nextCity;
-                    
                     visited[nextCity] = true;
                 }
-                if (paths[ant][^1] == 0 && paths[ant][^2] == 0)
+                /*if (paths[ant][^1] == 0 && paths[ant][^2] == 0)
                 {
                     var tempList = paths[ant].ToList(); // Konwersja do listy
                     tempList.RemoveAt(tempList.Count - 1); // Usunięcie ostatniego elementu
                     paths[ant] = tempList.ToArray(); // Konwersja z powrotem do tablicy
-                }
+                }*/
 
                 lengths[ant] = CalculateCost(paths[ant], distanceMatrix);
                 if (lengths[ant] < bestCost)
                 {
                     Console.WriteLine($"Iteracja: {iteration}, Mrówka: {ant} ({lengths[ant]})");
                     bestCost = lengths[ant];
-                    Array.Copy(paths[ant], bestPath, size);
+                    Array.Copy(paths[ant], bestPath, paths[ant].Length);
                 }
             }
 
@@ -283,7 +281,7 @@ public class AntColony
 
             for (int ant = 0; ant < NUM_ANTS; ant++)
             {
-                for (int step = 0; step < size - 1; step++)
+                for (int step = 0; step < size - 1; step++)// chyba do zmiany
                 {
                     int from = paths[ant][step];
                     int to = paths[ant][step + 1];
@@ -301,42 +299,11 @@ public class AntColony
         Console.WriteLine("Najlepszy koszt: " + bestCost +"/"+cvrp.OptimalValue);
         CalculateCost(bestPath, distanceMatrix);
         Console.Write("Najlepsza sciezka:\n ");
-        int demand = 0;
-        Console.WriteLine();
-        for(int i = 0; i <= 32; i++)
-        {
-            if (!bestPath.Contains(i)) Console.WriteLine("FALSE" + i);
-        }
-        foreach (var node in bestPath)
-        {
-            Console.Write(node + " ");
-        }
-        Console.WriteLine();
-        /*
-            foreach (var node in bestPath)
-        {
-            if (node != 0)
-            {
-                Console.Write(cvrp.Nodes[node].Demand+ " ");
-                demand += cvrp.Nodes[node].Demand;
-            }
-            else
-            {
-                //Console.WriteLine(demand);
-                //demand = 0;
-            }
-        }
-        Console.WriteLine(":"+demand);
+        
         Console.Write(string.Join(" ", bestPath));
         if (bestPath[^1] != 0)
-            Console.WriteLine(" "+ bestPath[0]);
-        demand = 0;
-        foreach(var node in cvrp.Nodes)
-        {
-            demand += node.Demand;
-            Console.Write(node.Demand+" ");
-        }
-        Console.WriteLine(":"+demand);*/
+            Console.WriteLine(" " + bestPath[0]);
+        
     }
 
     private double CalculateCost(int[] path, double[,] distanceMatrix)
