@@ -166,6 +166,8 @@ public class AntColony
         double total = 0.0;
         double[] probabilities = new double[size];
 
+
+
         for (int i = 0; i < size; i++)
         {
             if (i != currentCity && !visited[i] && cvrp.Nodes[i].Demand+truckLoad<=cvrp.Capacity)
@@ -176,11 +178,14 @@ public class AntColony
             }
         }
 
+       
         if (total == 0.0)
         {
             return 0;
             //return Array.IndexOf(visited, false); // First unvisited city
         }
+        
+
 
         double threshold = RandomDouble(0.0, total);
         double cumulative = 0.0;
@@ -231,7 +236,6 @@ public class AntColony
         {
             for (int ant = 0; ant < NUM_ANTS; ant++)
             {
-                General general = new General();
                 int capacity = 0;
                
                 bool[] visited = new bool[size];
@@ -247,11 +251,8 @@ public class AntColony
                         capacity = capacity + cvrp.Nodes[nextCity].Demand;
                     else
                     {
-
                         capacity = 0;
-                        
                     }
-
                     paths[ant][step] = nextCity;
                     visited[nextCity] = true;
                 }
