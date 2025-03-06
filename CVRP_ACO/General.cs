@@ -21,7 +21,7 @@ public class General
         }
     }
 
-    public int[] Greedy2(int[,] costMatrix, int size)
+    public int[] Greedy2(double[,] costMatrix, int size)
     {
         int[] path = new int[size];
         bool[] visited = new bool[size];
@@ -32,7 +32,7 @@ public class General
 
         for (int i = 1; i < size; i++)
         {
-            int min = int.MaxValue;
+            double min = int.MaxValue;
             int minIndex = -1;
 
             for (int j = 0; j < size; j++)
@@ -51,9 +51,9 @@ public class General
         return path;
     }
 
-    public int CalculateCost(int[] path, int[,] costMatrix, int size)
+    public double CalculateCost(int[] path, double[,] costMatrix, int size)
     {
-        int cost = 0;
+        double cost = 0;
         for (int i = 0; i < size - 1; i++)
         {
             cost += costMatrix[path[i], path[i + 1]];

@@ -145,6 +145,7 @@ public class AntColony
         return cost;
     }
 }*/
+using CVRP_ACO;
 using System;
 using System.Linq;
 
@@ -160,14 +161,14 @@ public class AntColony
     }
 
     public int SelectNextCity(int currentCity, bool[] visited, int size,
-        double[,] pheromones, int[,] distanceMatrix, double ALPHA, double BETA)
+        double[,] pheromones, double[,] distanceMatrix, double ALPHA, double BETA, CVRPInstance cvrp, int truckLoad)
     {
         double total = 0.0;
         double[] probabilities = new double[size];
 
         for (int i = 0; i < size; i++)
         {
-            if (i != currentCity && !visited[i])
+            if (i != currentCity && !visited[i] && cvrp.Nodes[i].Demand+truckLoad<=cvrp.Capacity)
             {
                 probabilities[i] = Math.Pow(pheromones[currentCity, i], ALPHA) *
                                    Math.Pow(1.0 / distanceMatrix[currentCity, i], BETA);
@@ -177,7 +178,8 @@ public class AntColony
 
         if (total == 0.0)
         {
-            return Array.IndexOf(visited, false); // First unvisited city
+            return 0;
+            //return Array.IndexOf(visited, false); // First unvisited city
         }
 
         double threshold = RandomDouble(0.0, total);
@@ -198,10 +200,13 @@ public class AntColony
         return 0;
     }
 
-    public void AntColonyOptimization(int[,] distanceMatrix, int size, int NUM_ANTS,
+    public void AntColonyOptimization( CVRPInstance cvrp,
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
-        out int[] bestPath, out int bestCost)
+        out int[] bestPath, out double bestCost)
     {
+        double[,] distanceMatrix = cvrp.costMatrix;
+        int size = cvrp.costMatrix.GetLength(0);
+        int NUM_ANTS = size;
         bestPath = new int[size];
         bestCost = int.MaxValue;
         double[,] pheromones = new double[size, size];
@@ -215,7 +220,7 @@ public class AntColony
         }
 
         int[][] paths = new int[NUM_ANTS][];
-        int[] lengths = new int[NUM_ANTS];
+        double[] lengths = new double[NUM_ANTS];
 
         for (int i = 0; i < NUM_ANTS; i++)
         {
@@ -228,8 +233,8 @@ public class AntColony
             for (int ant = 0; ant < NUM_ANTS; ant++)
             {
                 General general = new General();
-                int currentMassLoad = 0;
-                int currentDimensionLoad = 0;
+                int capacity = 0;
+               
                 bool[] visited = new bool[size];
                 int startCity = 0;
                 paths[ant][0] = startCity;
@@ -238,19 +243,16 @@ public class AntColony
                 for (int step = 1; step < size; step++)
                 {
                     int currentCity = paths[ant][step - 1];
-                    int nextCity = 0;
-                    if (currentMassLoad+general.cargoMass<=general.truckCapacity && currentDimensionLoad + general.cargoDimension <= general.truckDimension)
-                    {
-                        nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA);
-                        currentMassLoad = currentMassLoad + general.cargoMass;
-                        currentDimensionLoad = currentDimensionLoad + general.cargoDimension;
-                        
-                    }
+                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity);
+                    if (nextCity != 0)
+                        capacity = capacity + cvrp.Nodes[nextCity].Demand;
                     else
                     {
-                        currentMassLoad = 0;
-                        currentDimensionLoad = 0;
+
+                        capacity = 0;
+                        
                     }
+
                     paths[ant][step] = nextCity;
                     
                     visited[nextCity] = true;
@@ -296,18 +298,50 @@ public class AntColony
             }
         }
 
-        Console.WriteLine("Najlepszy koszt: " + bestCost);
+        Console.WriteLine("Najlepszy koszt: " + bestCost +"/"+cvrp.OptimalValue);
         CalculateCost(bestPath, distanceMatrix);
-        Console.Write("Najlepsza sciezka: ");
-        
+        Console.Write("Najlepsza sciezka:\n ");
+        int demand = 0;
+        Console.WriteLine();
+        for(int i = 0; i <= 32; i++)
+        {
+            if (!bestPath.Contains(i)) Console.WriteLine("FALSE" + i);
+        }
+        foreach (var node in bestPath)
+        {
+            Console.Write(node + " ");
+        }
+        Console.WriteLine();
+        /*
+            foreach (var node in bestPath)
+        {
+            if (node != 0)
+            {
+                Console.Write(cvrp.Nodes[node].Demand+ " ");
+                demand += cvrp.Nodes[node].Demand;
+            }
+            else
+            {
+                //Console.WriteLine(demand);
+                //demand = 0;
+            }
+        }
+        Console.WriteLine(":"+demand);
         Console.Write(string.Join(" ", bestPath));
         if (bestPath[^1] != 0)
             Console.WriteLine(" "+ bestPath[0]);
+        demand = 0;
+        foreach(var node in cvrp.Nodes)
+        {
+            demand += node.Demand;
+            Console.Write(node.Demand+" ");
+        }
+        Console.WriteLine(":"+demand);*/
     }
 
-    private int CalculateCost(int[] path, int[,] distanceMatrix)
+    private double CalculateCost(int[] path, double[,] distanceMatrix)
     {
-        int cost = 0;
+        double cost = 0;
         for (int i = 0; i < path.Length - 1; i++)
         {
             if (path[i] != path[i+1])
