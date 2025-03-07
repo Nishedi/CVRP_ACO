@@ -15,13 +15,13 @@ public class AntColony
     }
 
     public int SelectNextCity(int currentCity, bool[] visited, int size,
-        double[,] pheromones, double[,] distanceMatrix, double ALPHA, double BETA, CVRPInstance cvrp, int truckLoad)
+        double[,] pheromones, double[,] distanceMatrix, double ALPHA, double BETA, CVRPInstance cvrp, int truckLoad, int a)
     {
         double total = 0.0;
         double[] probabilities = new double[size];
 
 
-
+        
         for (int i = 0; i < size; i++)
         {
             if (i != currentCity && !visited[i] && cvrp.Nodes[i].Demand+truckLoad<=cvrp.Capacity)
@@ -32,12 +32,28 @@ public class AntColony
             }
         }
 
-       
-        if (total == 0.0)
-        {
-            return 0;
-            //return Array.IndexOf(visited, false); // First unvisited city
+        if (a == 0){
+            if (total == 0.0 && cvrp.Nodes[Array.IndexOf(visited, false)].Demand + truckLoad > cvrp.Capacity)
+            {
+
+                return 0;
+                //return Array.IndexOf(visited, false); // First unvisited city
+            }
+            else if (total == 0.0 && cvrp.Nodes[Array.IndexOf(visited, false)].Demand + truckLoad <= cvrp.Capacity)
+            {
+                return Array.IndexOf(visited, false);
+            }
         }
+        else
+        {
+            if (total == 0.0)
+            {
+
+                return 0;
+                //return Array.IndexOf(visited, false); // First unvisited city
+            }
+        }
+        
         
 
 
@@ -100,7 +116,7 @@ public class AntColony
                 for (int step = 1; visited.Contains(false); step++)
                 {
                     int currentCity = paths[ant][step - 1];
-                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity);
+                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity,0);
                     if (nextCity != 0)
                         capacity = capacity + cvrp.Nodes[nextCity].Demand;
                     else
@@ -204,7 +220,7 @@ public class AntColony
                 for (int step = 1; visited.Contains(false); step++)
                 {
                     int currentCity = paths[ant][step - 1];
-                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity);
+                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity, 0);
                     capacity = (nextCity != 0) ? capacity + cvrp.Nodes[nextCity].Demand : 0;
                     paths[ant][step] = nextCity;
                     visited[nextCity] = true;
@@ -264,6 +280,8 @@ public class AntColony
         }
 
         Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
+        Console.WriteLine("x"+(bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
+
         CalculateCost(bestPath, distanceMatrix);
         Console.Write("Najlepsza ścieżka:\n ");
         Console.Write(string.Join(" ", bestPath));
@@ -274,7 +292,7 @@ public class AntColony
 
 
     public void AntColonyOptimizationPararrelv2(CVRPInstance cvrp,
-        double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
+        double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO, int a,
         out int[] bestPath, out double bestCost)
     {
         double[,] distanceMatrix = cvrp.costMatrix;
@@ -312,7 +330,7 @@ public class AntColony
                 for (int step = 1; visited.Contains(false); step++)
                 {
                     int currentCity = paths[ant][step - 1];
-                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity);
+                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity,a );
                     capacity = (nextCity != 0) ? capacity + cvrp.Nodes[nextCity].Demand : 0;
                     paths[ant][step] = nextCity;
                     visited[nextCity] = true;
@@ -369,6 +387,8 @@ public class AntColony
 
         Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
         CalculateCost(bestPath, distanceMatrix);
+        Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
+
         Console.Write("Najlepsza ścieżka:\n ");
         Console.Write(string.Join(" ", bestPath));
         if (bestPath[^1] != 0)

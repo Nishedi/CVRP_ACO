@@ -24,8 +24,8 @@ class MainClass
         int ants = instanceSize;
         double alpha = 0.9, beta = 3.0, rho = 0.7, q = 10.0;
         int maxIterations = instanceSize * instanceSize / 50;
-        maxIterations = 200000;
-        int maxTimeACO = 10;
+        maxIterations = 10000;
+        int maxTimeACO =10;
 
         while (true)
         {
@@ -42,7 +42,7 @@ class MainClass
                     fileReader.ShowTab();
                     break;
                 case 3:
-                    string[] filenames = new string[] { /*"A-n44-k6.txt", "A-n55-k9.txt", "A-n63-k10.txt","A-n69-k9.txt",*/ "A-n80-k10.txt" };
+                    string[] filenames = new string[] { "A-n44-k6.txt", "A-n55-k9.txt", /*"A-n63-k10.txt",*/"A-n69-k9.txt", "A-n80-k10.txt" };
 
 
                     foreach (var filename in filenames)
@@ -59,15 +59,21 @@ class MainClass
                         //stopwatch.Stop();
                         //Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
                         //stopwatch.Reset();
-                        //stopwatch.Start();
-                        //antColony.AntColonyOptimizationPararrel(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
-                        //stopwatch.Stop();
-                        //Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
-                        stopwatch.Reset();
-                        stopwatch.Start();
-                        antColony.AntColonyOptimizationPararrelv2(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
+                       /* stopwatch.Start();
+                        antColony.AntColonyOptimizationPararrel(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
                         stopwatch.Stop();
                         Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
+                        stopwatch.Reset();*/
+                        stopwatch.Start();
+                        antColony.AntColonyOptimizationPararrelv2(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, 0, out bestSolution, out bestCost);
+                        stopwatch.Stop();
+                        Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
+                        stopwatch.Reset();
+                        stopwatch.Start();
+                        antColony.AntColonyOptimizationPararrelv2(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO,1, out bestSolution, out bestCost);
+                        stopwatch.Stop();
+                        Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
+                    
                     }
                     break;
                 case 4:
@@ -88,7 +94,6 @@ class MainClass
                     break;
                 case 0:
                     return;
-                    break;
                 default:
                     Console.WriteLine("Nieprawidłowa opcja.");
                     break;
