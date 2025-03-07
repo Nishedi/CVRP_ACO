@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "qFx5Q2T40oeO2XfUVW/yon4zvtVdq2Qkjwy9U93Wf9rk4ZZyxacsyKYxxWmdFy6j0WYQwB0X099DJ4y+PD4mtA==",
+  "dgSpecHash": "DaC4bt0goyw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\minec\\Desktop\\CVRP_ACO\\CVRP_ACO\\CVRP_ACO.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\CVRP_ACO.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\KONRAD PEMPERA\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\KONRAD PEMPERA\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\KONRAD PEMPERA\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\KONRAD PEMPERA\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.20\\microsoft.netcore.app.host.win-x64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }

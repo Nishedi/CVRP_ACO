@@ -13,3 +13,18 @@ C:\Users\minec\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\refint\CVRP_ACO.dll
 C:\Users\minec\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.pdb
 C:\Users\minec\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.genruntimeconfig.cache
 C:\Users\minec\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\ref\CVRP_ACO.dll
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.AssemblyInfoInputs.cache
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.AssemblyInfo.cs
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.csproj.CoreCompileInputs.cache
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.sourcelink.json
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.dll
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\refint\CVRP_ACO.dll
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.pdb
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\bin\Debug\net7.0\CVRP_ACO.exe
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\bin\Debug\net7.0\CVRP_ACO.deps.json
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\bin\Debug\net7.0\CVRP_ACO.runtimeconfig.json
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\bin\Debug\net7.0\CVRP_ACO.dll
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\bin\Debug\net7.0\CVRP_ACO.pdb
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\CVRP_ACO.genruntimeconfig.cache
+C:\Users\KONRAD PEMPERA\Desktop\CVRP_ACO\CVRP_ACO\obj\Debug\net7.0\ref\CVRP_ACO.dll

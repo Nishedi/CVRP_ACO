@@ -1,0 +1,119 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|c:\\users\\konrad pempera\\desktop\\cvrp_aco\\cvrp_aco\\antcolony.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|solutionrelative:cvrp_aco\\antcolony.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|c:\\users\\konrad pempera\\desktop\\cvrp_aco\\cvrp_aco\\mainclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|solutionrelative:cvrp_aco\\mainclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|c:\\users\\konrad pempera\\desktop\\cvrp_aco\\cvrp_aco\\cvrpinstance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|solutionrelative:cvrp_aco\\cvrpinstance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|c:\\users\\konrad pempera\\desktop\\cvrp_aco\\cvrp_aco\\general.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|solutionrelative:cvrp_aco\\general.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|c:\\users\\konrad pempera\\desktop\\cvrp_aco\\cvrp_aco\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|solutionrelative:cvrp_aco\\node.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|c:\\users\\konrad pempera\\desktop\\cvrp_aco\\cvrp_aco\\filereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0F30C2E0-E416-4959-977A-8B4058CBD169}|CVRP_ACO\\CVRP_ACO.csproj|solutionrelative:cvrp_aco\\filereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CVRPInstance.cs",
+              "DocumentMoniker": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\CVRPInstance.cs",
+              "RelativeDocumentMoniker": "CVRP_ACO\\CVRPInstance.cs",
+              "ToolTip": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\CVRPInstance.cs",
+              "RelativeToolTip": "CVRP_ACO\\CVRPInstance.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAWwFEAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T13:31:59.516Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Node.cs",
+              "DocumentMoniker": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\Node.cs",
+              "RelativeDocumentMoniker": "CVRP_ACO\\Node.cs",
+              "ToolTip": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\Node.cs",
+              "RelativeToolTip": "CVRP_ACO\\Node.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T13:31:59.532Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "General.cs",
+              "DocumentMoniker": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\General.cs",
+              "RelativeDocumentMoniker": "CVRP_ACO\\General.cs",
+              "ToolTip": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\General.cs",
+              "RelativeToolTip": "CVRP_ACO\\General.cs",
+              "ViewState": "AQIAACcAAAAAAAAAAAAowDcAAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T13:31:59.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AntColony.cs",
+              "DocumentMoniker": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\AntColony.cs",
+              "RelativeDocumentMoniker": "CVRP_ACO\\AntColony.cs",
+              "ToolTip": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\AntColony.cs*",
+              "RelativeToolTip": "CVRP_ACO\\AntColony.cs*",
+              "ViewState": "AgIAAGYAAAAAAAAAAADwv5gAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T13:31:59.598Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainClass.cs",
+              "DocumentMoniker": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\MainClass.cs",
+              "RelativeDocumentMoniker": "CVRP_ACO\\MainClass.cs",
+              "ToolTip": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\MainClass.cs",
+              "RelativeToolTip": "CVRP_ACO\\MainClass.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAAnwEMAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T13:31:59.628Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FileReader.cs",
+              "DocumentMoniker": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\FileReader.cs",
+              "RelativeDocumentMoniker": "CVRP_ACO\\FileReader.cs",
+              "ToolTip": "C:\\Users\\KONRAD PEMPERA\\Desktop\\CVRP_ACO\\CVRP_ACO\\FileReader.cs",
+              "RelativeToolTip": "CVRP_ACO\\FileReader.cs",
+              "ViewState": "AQIAAEwAAAAAAAAAAAAAAGgAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T13:31:59.629Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

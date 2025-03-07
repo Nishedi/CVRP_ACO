@@ -1,5 +1,6 @@
 ﻿using CVRP_ACO;
 using System;
+using System.Diagnostics;
 
 class MainClass
 {
@@ -23,7 +24,7 @@ class MainClass
         int ants = instanceSize;
         double alpha = 0.9, beta = 3.0, rho = 0.7, q = 10.0;
         int maxIterations = instanceSize * instanceSize / 50;
-        maxIterations = 7000;
+        maxIterations = 200000;
         int maxTimeACO = 10;
 
         while (true)
@@ -37,16 +38,37 @@ class MainClass
             switch (choice)
             {
                 case 2:
-                    Console.WriteLine("Ostatnio wczytane dane:");
+                    Console.WriteLine("Wczytywanie danych: to do");
                     fileReader.ShowTab();
                     break;
                 case 3:
-                    
-                     var cvrp = CVRPInstance.LoadFromFile("test.txt");
-                     cvrp.createDistanceMatrix(cvrp.Nodes);
-                     Console.WriteLine("Algorytm mrówkowy");
-                     antColony.AntColonyOptimization(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
-                    
+                    string[] filenames = new string[] { /*"A-n44-k6.txt", "A-n55-k9.txt", "A-n63-k10.txt","A-n69-k9.txt",*/ "A-n80-k10.txt" };
+
+
+                    foreach (var filename in filenames)
+                    {
+                        Console.WriteLine("\n" + filename);
+                        var cvrp = CVRPInstance.LoadFromFile(filename);
+                        cvrp.createDistanceMatrix(cvrp.Nodes);
+                        Console.WriteLine("Algorytm mrówkowy");
+                        Stopwatch stopwatch = new Stopwatch();
+
+                        //wersja jednowątkowa
+                        //stopwatch.Start(); 
+                        //antColony.AntColonyOptimization(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
+                        //stopwatch.Stop();
+                        //Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
+                        //stopwatch.Reset();
+                        //stopwatch.Start();
+                        //antColony.AntColonyOptimizationPararrel(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
+                        //stopwatch.Stop();
+                        //Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
+                        stopwatch.Reset();
+                        stopwatch.Start();
+                        antColony.AntColonyOptimizationPararrelv2(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
+                        stopwatch.Stop();
+                        Console.WriteLine($"Czas wykonania algorytmu jednowątkowego: {stopwatch.ElapsedMilliseconds} ms");
+                    }
                     break;
                 case 4:
                     Console.Write("Podaj liczbę mrówek: ");
@@ -64,18 +86,9 @@ class MainClass
                     Console.Write("Podaj maksymalny czas algorytmu: ");
                     maxTimeACO = int.Parse(Console.ReadLine());
                     break;
-                case 8:
-                    if (instance != null && instanceSize > 0)
-                    {
-                        Console.WriteLine("Algorytm zachłanny"+general.CalculateCost(general.Greedy2(instance, instanceSize),instance,instanceSize));
-                       
-                    }
-                    else Console.WriteLine("Brak danych.");
+                case 0:
+                    return;
                     break;
-                /*case 9:
-                    var cvrp = CVRPInstance.LoadFromFile("test.txt");
-                    cvrp.createDistanceMatrix(cvrp.Nodes);
-                    break;*/
                 default:
                     Console.WriteLine("Nieprawidłowa opcja.");
                     break;
