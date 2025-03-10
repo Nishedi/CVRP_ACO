@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "iEBA0DnVvSJN75FpRh6/wAiBNL+0Vp3QHTAqZS5Twgej9tJBS8AYCEMSMUwOnNlb798PEQlqhJQRYdNGzYSYAQ==",
+  "dgSpecHash": "l3lOrp+5YnI=",
   "success": true,
   "projectFilePath": "/Users/zet/Optymalizacja/CVRP_ACO/CVRP_ACO/CVRP_ACO.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/zet/.nuget/packages/microsoft.netcore.app.ref/7.0.20/microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "/Users/zet/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.20/microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "/Users/zet/.nuget/packages/microsoft.netcore.app.host.osx-arm64/7.0.20/microsoft.netcore.app.host.osx-arm64.7.0.20.nupkg.sha512"
+  ],
   "logs": []
 }
