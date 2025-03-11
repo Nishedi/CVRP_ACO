@@ -64,7 +64,7 @@ public class AntColony
         return 0;
     }
 
-    public void AntColonyOptimization(CVRPInstance cvrp,
+    public double AntColonyOptimization(CVRPInstance cvrp,
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
         out int[] bestPath, out double bestCost)
     {
@@ -156,20 +156,22 @@ public class AntColony
             }
         }
 
+        
         Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
+        Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
         CalculateCost(bestPath, distanceMatrix);
-        Console.Write("Najlepsza sciezka:\n ");
+        // Console.Write("Najlepsza sciezka:\n ");
 
-        Console.Write(string.Join(" ", bestPath));
-        if (bestPath[^1] != 0)
-            Console.WriteLine(" " + bestPath[0]);
-
+        // Console.Write(string.Join(" ", bestPath));
+        // if (bestPath[^1] != 0)
+        //     Console.WriteLine(" " + bestPath[0]);
+        return bestCost;
     }
 
 
 
 
-    public void AntColonyOptimizationPararrel(CVRPInstance cvrp,
+    public double AntColonyOptimizationPararrel(CVRPInstance cvrp,
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
         out int[] bestPath, out double bestCost)
     {
@@ -272,17 +274,18 @@ public class AntColony
         Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
 
         CalculateCost(bestPath, distanceMatrix);
-        Console.Write("Najlepsza ścieżka:\n ");
-        Console.Write(string.Join(" ", bestPath));
-        if (bestPath[^1] != 0)
-            Console.WriteLine(" " + bestPath[0]);
+        // Console.Write("Najlepsza ścieżka:\n ");
+        // Console.Write(string.Join(" ", bestPath));
+        // if (bestPath[^1] != 0)
+        //     Console.WriteLine(" " + bestPath[0]);
+        return bestCost;
     }
 
 
 
-    public void AntColonyOptimizationPararrelv2(CVRPInstance cvrp,
+    public double AntColonyOptimizationPararrelv2(CVRPInstance cvrp,
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
-        out int[] bestPath, out double bestCost)
+        out int[] bestPath, out double bestCost, bool writeValues = true)
     {
         double[,] distanceMatrix = cvrp.costMatrix;
         int size = cvrp.costMatrix.GetLength(0);
@@ -374,14 +377,20 @@ public class AntColony
             });
         }
 
-        Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
-        CalculateCost(bestPath, distanceMatrix);
-        Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
+        if (writeValues)
+        {
+            Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
+            Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
 
-        // Console.Write("Najlepsza ścieżka:\n ");
-        // Console.Write(string.Join(" ", bestPath));
-        // if (bestPath[^1] != 0)
-        //     Console.WriteLine(" " + bestPath[0]);
+            CalculateCost(bestPath, distanceMatrix);
+
+
+            Console.Write("Najlepsza ścieżka:\n ");
+            Console.Write(string.Join(" ", bestPath));
+            if (bestPath[^1] != 0)
+                Console.WriteLine(" " + bestPath[0]);
+        }
+        return bestCost;
     }
 
 
@@ -421,74 +430,84 @@ public class AntColony
     /// <param name="acoIterations">Number of ACO iterations per tuning run.</param>
     /// <param name="temperature">Temperature parameter for softmax (controls exploration/exploitation).</param>
     /// <param name="learningRate">Learning rate for updating candidate quality estimates.</param>
-    public void AntColonyOptimizationWithTuning(CVRPInstance cvrp,
-        int tuningIterations, int acoIterations, double temperature, double learningRate)
+public void AntColonyOptimizationWithTuning(CVRPInstance cvrp,
+    int tuningIterations, int acoIterations, double temperature, double learningRate)
+{
+    // Define candidate sets for each parameter
+    double[] candidateAlpha = Enumerable.Range(1, 25).Select(i => i * 0.1).ToArray();
+    double[] candidateBeta = Enumerable.Range(7, 25).Select(i => i * 0.1).ToArray();
+    double[] candidateRho = Enumerable.Range(1, 20).Select(i => i * 0.05).ToArray();
+    double[] candidateQ = { 1, 10, 20, 30, 40, 50, 100, 200, 300, 400, 500 };
+
+    // Initialize quality (expected reward) estimates for each candidate
+    double[] qualityAlpha = new double[candidateAlpha.Length];
+    double[] qualityBeta = new double[candidateBeta.Length];
+    double[] qualityRho = new double[candidateRho.Length];
+    double[] qualityQ = new double[candidateQ.Length];
+    for (int i = 0; i < candidateAlpha.Length; i++) qualityAlpha[i] = 0.0;
+    for (int i = 0; i < candidateBeta.Length; i++) qualityBeta[i] = 0.0;
+    for (int i = 0; i < candidateRho.Length; i++) qualityRho[i] = 0.0;
+    for (int i = 0; i < candidateQ.Length; i++) qualityQ[i] = 0.0;
+
+    double bestOverallCost = double.MaxValue;
+    double[] bestParameters = new double[4]; // bestParameters[0]=ALPHA, [1]=BETA, [2]=RHO, [3]=Q
+
+    // Settings for the progress bar
+    int progressBarWidth = 50;
+
+    for (int t = 0; t < tuningIterations; t++)
     {
-        // Define candidate sets for each parameter
-        double[] candidateAlpha = {0,4,0.5,0.7, 1.0, 1.5, 2.0, 2.5 };
-        double[] candidateBeta = {0.9, 1.0, 1.5, 2.0, 2.5 };
-        double[] candidateRho = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 };
-        double[] candidateQ = {1,10,20,30,40,50, 100, 200, 300, 400,500 };
+        // Update progress bar
+        double progress = (double)t / tuningIterations;
+        int filledBars = (int)(progress * progressBarWidth);
+        string progressBar = "[" + new string('#', filledBars) + new string('-', progressBarWidth - filledBars) + "]";
+        Console.Write($"\rProgress: {progress:P0} {progressBar}");
 
-        // Initialize quality (expected reward) estimates for each candidate
-        double[] qualityAlpha = new double[candidateAlpha.Length];
-        double[] qualityBeta = new double[candidateBeta.Length];
-        double[] qualityRho = new double[candidateRho.Length];
-        double[] qualityQ = new double[candidateQ.Length];
-        for (int i = 0; i < candidateAlpha.Length; i++) qualityAlpha[i] = 0.0;
-        for (int i = 0; i < candidateBeta.Length; i++) qualityBeta[i] = 0.0;
-        for (int i = 0; i < candidateRho.Length; i++) qualityRho[i] = 0.0;
-        for (int i = 0; i < candidateQ.Length; i++) qualityQ[i] = 0.0;
+        // Select candidate parameters using softmax selection
+        int idxAlpha = SoftmaxSelect(qualityAlpha, temperature);
+        int idxBeta = SoftmaxSelect(qualityBeta, temperature);
+        int idxRho = SoftmaxSelect(qualityRho, temperature);
+        int idxQ = SoftmaxSelect(qualityQ, temperature);
 
-        double bestOverallCost = double.MaxValue;
-        double[] bestParameters = new double[4]; // bestParameters[0]=ALPHA, [1]=BETA, [2]=RHO, [3]=Q
+        double selectedAlpha = candidateAlpha[idxAlpha];
+        double selectedBeta = candidateBeta[idxBeta];
+        double selectedRho = candidateRho[idxRho];
+        double selectedQ = candidateQ[idxQ];
 
-        for (int t = 0; t < tuningIterations; t++)
+        // Run the ACO algorithm using the selected parameters
+        int[] bestPath;
+        double bestCost;
+        this.AntColonyOptimizationPararrelv2(cvrp, selectedAlpha, selectedBeta, selectedRho, selectedQ,
+                                acoIterations, maxTimeACO: 0, out bestPath, out bestCost, writeValues: false);
+
+        // Define a reward measure; here we use the ratio (OptimalValue / bestCost)
+        double reward = cvrp.OptimalValue / bestCost;
+
+        // Update quality estimates using an exponential moving average
+        qualityAlpha[idxAlpha] = qualityAlpha[idxAlpha] + learningRate * (reward - qualityAlpha[idxAlpha]);
+        qualityBeta[idxBeta] = qualityBeta[idxBeta] + learningRate * (reward - qualityBeta[idxBeta]);
+        qualityRho[idxRho] = qualityRho[idxRho] + learningRate * (reward - qualityRho[idxRho]);
+        qualityQ[idxQ] = qualityQ[idxQ] + learningRate * (reward - qualityQ[idxQ]);
+
+        // Record best overall parameters if this run improved the cost
+        if (bestCost < bestOverallCost)
         {
-            // Select candidate parameters using softmax selection
-            int idxAlpha = SoftmaxSelect(qualityAlpha, temperature);
-            int idxBeta = SoftmaxSelect(qualityBeta, temperature);
-            int idxRho = SoftmaxSelect(qualityRho, temperature);
-            int idxQ = SoftmaxSelect(qualityQ, temperature);
-
-            double selectedAlpha = candidateAlpha[idxAlpha];
-            double selectedBeta = candidateBeta[idxBeta];
-            double selectedRho = candidateRho[idxRho];
-            double selectedQ = candidateQ[idxQ];
-
-            // Run the ACO algorithm using the selected parameters
-            int[] bestPath;
-            double bestCost;
-            this.AntColonyOptimizationPararrelv2(cvrp, selectedAlpha, selectedBeta, selectedRho, selectedQ,
-                                       acoIterations, maxTimeACO: 0, out bestPath, out bestCost);
-
-            // Define a reward measure; here we use the ratio (OptimalValue / bestCost)
-            // so that better (lower cost) solutions yield higher rewards.
-            double reward = cvrp.OptimalValue / bestCost;
-
-            // Update quality estimates using an exponential moving average
-            qualityAlpha[idxAlpha] = qualityAlpha[idxAlpha] + learningRate * (reward - qualityAlpha[idxAlpha]);
-            qualityBeta[idxBeta] = qualityBeta[idxBeta] + learningRate * (reward - qualityBeta[idxBeta]);
-            qualityRho[idxRho] = qualityRho[idxRho] + learningRate * (reward - qualityRho[idxRho]);
-            qualityQ[idxQ] = qualityQ[idxQ] + learningRate * (reward - qualityQ[idxQ]);
-
-            // Record best overall parameters if this run improved the cost
-            if (bestCost < bestOverallCost)
-            {
-                bestOverallCost = bestCost;
-                bestParameters[0] = selectedAlpha;
-                bestParameters[1] = selectedBeta;
-                bestParameters[2] = selectedRho;
-                bestParameters[3] = selectedQ;
-            }
-
-            // Console.WriteLine($"Tuning Iteration {t}: Selected (Alpha, Beta, Rho, Q)=({selectedAlpha}, {selectedBeta}, {selectedRho}, {selectedQ}) => Reward: {reward}, BestCost: {bestCost}");
+            bestOverallCost = bestCost;
+            bestParameters[0] = selectedAlpha;
+            bestParameters[1] = selectedBeta;
+            bestParameters[2] = selectedRho;
+            bestParameters[3] = selectedQ;
         }
-
-        Console.WriteLine("Best Overall Parameters Found:");
-        Console.WriteLine($"Alpha: {bestParameters[0]}, Beta: {bestParameters[1]}, Rho: {bestParameters[2]}, Q: {bestParameters[3]} with cost: {bestOverallCost}");
     }
 
+    // Ensure progress bar reaches 100%
+    Console.WriteLine("\rProgress: 100% [" + new string('#', progressBarWidth) + "]");
+
+    Console.WriteLine("\nBest Overall Parameters Found:");
+    Console.WriteLine($"Alpha: {bestParameters[0]}, Beta: {bestParameters[1]}, Rho: {bestParameters[2]}, Q: {bestParameters[3]}");
+    Console.WriteLine("Najlepszy koszt: " + bestOverallCost + "/" + cvrp.OptimalValue);
+    Console.WriteLine("x" + (bestOverallCost - cvrp.OptimalValue) / cvrp.OptimalValue);
+}
     /// <summary>
     /// Helper method that selects an index from the quality array using the softmax function.
     /// </summary>

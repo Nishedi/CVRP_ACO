@@ -9,7 +9,7 @@ public class KnnCVRP
     /// Solves the CVRP instance using a nearest neighbor heuristic.
     /// </summary>
     /// <param name="cvrp">The CVRP instance containing the nodes, capacity and cost matrix.</param>
-    public void KnnSolve(CVRPInstance cvrp)
+    public double KnnSolve(CVRPInstance cvrp)
     {
         int size = cvrp.costMatrix.GetLength(0);
         // Initialize visited array; assume depot (index 0) is always visited.
@@ -70,20 +70,24 @@ public class KnnCVRP
         }
 
         // Output the solution
-        Console.WriteLine("Total cost: " + totalCost);
+        
+        Console.WriteLine("Najlepszy koszt: " + totalCost + "/" + cvrp.OptimalValue);
+        Console.WriteLine("x" + (totalCost - cvrp.OptimalValue) / cvrp.OptimalValue);
         // for (int i = 0; i < routes.Count; i++)
         // {
         //     Console.WriteLine("Route " + (i + 1) + ": " + string.Join(" -> ", routes[i]));
         // }
+
+        return totalCost;
     }
 
     /// <summary>
     /// Solves the CVRP instance using a nearest neighbor heuristic combined with a 2-opt local search to improve each route.
     /// </summary>
     /// <param name="cvrp">The CVRP instance containing the nodes, capacity, and cost matrix.</param>
-    public void knn2OptSolve(CVRPInstance cvrp)
+    public double knn2OptSolve(CVRPInstance cvrp)
     {
-       int size = cvrp.costMatrix.GetLength(0);
+        int size = cvrp.costMatrix.GetLength(0);
         if (size == 0)
         {
             throw new InvalidOperationException("The cost matrix is empty. Please check your CVRPInstance initialization.");
@@ -155,12 +159,14 @@ public class KnnCVRP
             }
         }
 
-        // Output the final results.
-        Console.WriteLine("Total cost: " + totalCost);
-        for (int i = 0; i < routes.Count; i++)
-        {
-            Console.WriteLine("Route " + (i + 1) + ": " + string.Join(" -> ", routes[i]));
-        }
+        // // Output the final results.
+        Console.WriteLine("Najlepszy koszt: " + totalCost + "/" + cvrp.OptimalValue);
+        Console.WriteLine("x" + (totalCost - cvrp.OptimalValue) / cvrp.OptimalValue);
+        // for (int i = 0; i < routes.Count; i++)
+        // {
+        //     Console.WriteLine("Route " + (i + 1) + ": " + string.Join(" -> ", routes[i]));
+        // }
+        return totalCost;
     }
 
     /// <summary>
