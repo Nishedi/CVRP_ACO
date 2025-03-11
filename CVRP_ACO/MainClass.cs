@@ -42,7 +42,7 @@ class MainClass
                     fileReader.ShowTab();
                     break;
                 case 3:
-                    string[] filenames = new string[] { "A-n44-k6.txt", "A-n55-k9.txt", "A-n63-k10.txt","A-n69-k9.txt", "A-n80-k10.txt" };
+                    string[] filenames = new string[] {/* "A-n44-k6.txt", "A-n55-k9.txt", "A-n63-k10.txt","A-n69-k9.txt",*/ "A-n80-k10.txt" };
 
 
                     foreach (var filename in filenames)
