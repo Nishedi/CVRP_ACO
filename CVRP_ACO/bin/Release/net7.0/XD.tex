@@ -1,0 +1,24 @@
+\begin{figure}[H]
+\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar,
+            bar width=.5cm,
+            width=12cm,
+            height=7cm,
+            ymin=0,
+            ylabel={Czas [s]},
+            symbolic x coords={n44-k6, n55-k9},
+            xtick=data,
+            nodes near coords,
+           nodes near coords align={vertical},
+            enlarge x limits=0.25,
+        ]
+        legend style={at={(0.5,-0.15)}, anchor=north, legend columns=-1}, % legenda pod wykresem
+            legend cell align={left}\addplot coordinates {(n44-k6,22854)(n55-k9,42464)};
+\addlegendentry{Jednowątkowo}\addplot coordinates {(n44-k6,6541)(n55-k9,10851)};
+\addlegendentry{Wielowątkowo}\end{axis}
+    \end{tikzpicture}
+    \caption{Porównanie czasów działania algorytmów}
+    \label{fig:czas-algorytmy}
+\end{figure}
