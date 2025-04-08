@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 public class AntColony
 {
@@ -20,8 +21,6 @@ public class AntColony
         double total = 0.0;
         double[] probabilities = new double[size];
 
-
-
         for (int i = 0; i < size; i++)
         {
             if (i != currentCity && !visited[i] && cvrp.Nodes[i].Demand + truckLoad <= cvrp.Capacity)
@@ -35,16 +34,12 @@ public class AntColony
 
         if (total == 0.0 && cvrp.Nodes[Array.IndexOf(visited, false)].Demand + truckLoad > cvrp.Capacity)
         {
-
             return 0;
-            //return Array.IndexOf(visited, false); // First unvisited city
         }
         else if (total == 0.0 && cvrp.Nodes[Array.IndexOf(visited, false)].Demand + truckLoad <= cvrp.Capacity)
         {
             return Array.IndexOf(visited, false);
         }
-
-
 
         double threshold = RandomDouble(0.0, total);
         double cumulative = 0.0;
@@ -61,7 +56,6 @@ public class AntColony
             }
         }
         return Array.IndexOf(visited, false);
-        return 0;
     }
 
     public double AntColonyOptimization(CVRPInstance cvrp,
@@ -90,7 +84,7 @@ public class AntColony
         {
             paths[i] = new int[size * 2];
         }
-
+        
         for (int iteration = 0; iteration < maxIterations; iteration++)
         {
             for (int ant = 0; ant < NUM_ANTS; ant++)
@@ -115,17 +109,10 @@ public class AntColony
                     paths[ant][step] = nextCity;
                     visited[nextCity] = true;
                 }
-                /*if (paths[ant][^1] == 0 && paths[ant][^2] == 0)
-                {
-                    var tempList = paths[ant].ToList(); // Konwersja do listy
-                    tempList.RemoveAt(tempList.Count - 1); // Usunięcie ostatniego elementu
-                    paths[ant] = tempList.ToArray(); // Konwersja z powrotem do tablicy
-                }*/
 
                 lengths[ant] = CalculateCost(paths[ant], distanceMatrix);
                 if (lengths[ant] < bestCost)
                 {
-                    Console.WriteLine($"Iteracja: {iteration}, Mrówka: {ant} ({lengths[ant]})");
                     bestCost = lengths[ant];
                     Array.Copy(paths[ant], bestPath, paths[ant].Length);
                 }
@@ -155,23 +142,10 @@ public class AntColony
                 pheromones[lastTo, lastFrom] += Q / lengths[ant];
             }
         }
-
-        
-        Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
-        Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
-        CalculateCost(bestPath, distanceMatrix);
-        // Console.Write("Najlepsza sciezka:\n ");
-
-        // Console.Write(string.Join(" ", bestPath));
-        // if (bestPath[^1] != 0)
-        //     Console.WriteLine(" " + bestPath[0]);
         return bestCost;
     }
 
-
-
-
-    public double AntColonyOptimizationPararrel(CVRPInstance cvrp,
+    public double AntColonyOptimizationPararrelv2(CVRPInstance cvrp,
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
         out int[] bestPath, out double bestCost)
     {
@@ -186,121 +160,8 @@ public class AntColony
             for (int j = 0; j < size; j++)
                 pheromones[i, j] = 1.0;
 
-        int[][] paths = new int[NUM_ANTS][];
-        double[] lengths = new double[NUM_ANTS];
-
-        for (int i = 0; i < NUM_ANTS; i++)
-            paths[i] = new int[size * 2];
-
         object lockObject = new object();
-
-        for (int iteration = 0; iteration < maxIterations; iteration++)
-        {
-            // Track the best cost in the current iteration locally for each ant
-            double localBestCost = double.MaxValue;
-            int[] localBestPath = new int[size * 2];
-
-            Parallel.For(0, NUM_ANTS, ant =>
-            {
-                int capacity = 0;
-                bool[] visited = new bool[size];
-                int startCity = 0;
-                paths[ant][0] = startCity;
-                visited[startCity] = true;
-
-                for (int step = 1; visited.Contains(false); step++)
-                {
-                    int currentCity = paths[ant][step - 1];
-                    int nextCity = SelectNextCity(currentCity, visited, size, pheromones, distanceMatrix, ALPHA, BETA, cvrp, capacity);
-                    capacity = (nextCity != 0) ? capacity + cvrp.Nodes[nextCity].Demand : 0;
-                    paths[ant][step] = nextCity;
-                    visited[nextCity] = true;
-                }
-
-                lengths[ant] = CalculateCost(paths[ant], distanceMatrix);
-
-                // Check if this ant's solution is the best so far in this iteration
-                if (lengths[ant] < localBestCost)
-                {
-                    localBestCost = lengths[ant];
-                    Array.Copy(paths[ant], localBestPath, paths[ant].Length);
-                }
-            });
-
-            // After the parallel execution, update the global best cost and path
-            lock (lockObject)
-            {
-                if (localBestCost < bestCost)
-                {
-                    Console.WriteLine($"Iteracja: {iteration}, Najlepszy koszt: {localBestCost}");
-                    bestCost = localBestCost;
-                    Array.Copy(localBestPath, bestPath, localBestPath.Length);
-                }
-            }
-
-            // Update pheromones
-            Parallel.For(0, size, i =>
-            {
-                for (int j = 0; j < size; j++)
-                {
-                    pheromones[i, j] *= (1.0 - RHO);
-                }
-            });
-
-            Parallel.For(0, NUM_ANTS, ant =>
-            {
-                for (int step = 0; step < size - 1; step++)
-                {
-                    int from = paths[ant][step];
-                    int to = paths[ant][step + 1];
-                    lock (lockObject)
-                    {
-                        pheromones[from, to] += Q / lengths[ant];
-                        pheromones[to, from] += Q / lengths[ant];
-                    }
-                }
-
-                int lastFrom = paths[ant][size - 1];
-                int lastTo = paths[ant][0];
-                lock (lockObject)
-                {
-                    pheromones[lastFrom, lastTo] += Q / lengths[ant];
-                    pheromones[lastTo, lastFrom] += Q / lengths[ant];
-                }
-            });
-        }
-
-        Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
-        Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
-
-        CalculateCost(bestPath, distanceMatrix);
-        // Console.Write("Najlepsza ścieżka:\n ");
-        // Console.Write(string.Join(" ", bestPath));
-        // if (bestPath[^1] != 0)
-        //     Console.WriteLine(" " + bestPath[0]);
-        return bestCost;
-    }
-
-
-
-    public double AntColonyOptimizationPararrelv2(CVRPInstance cvrp,
-        double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
-        out int[] bestPath, out double bestCost, bool writeValues = true)
-    {
-        double[,] distanceMatrix = cvrp.costMatrix;
-        int size = cvrp.costMatrix.GetLength(0);
-        int NUM_ANTS = size;
-        bestPath = new int[size * 2];
-        bestCost = double.MaxValue;
-        double[,] pheromones = new double[size, size];
-
-        // Initialize pheromones
-        for (int i = 0; i < size; i++)
-            for (int j = 0; j < size; j++)
-                pheromones[i, j] = 1.0;
-
-        object lockObject = new object();
-
+        
         for (int iteration = 0; iteration < maxIterations; iteration++)  // Sequential iterations
         {
             int[][] paths = new int[NUM_ANTS][];
@@ -330,65 +191,43 @@ public class AntColony
 
                 lengths[ant] = CalculateCost(paths[ant], distanceMatrix);
 
-                // Update local best cost
                 if (lengths[ant] < localBestCost)
                 {
-                    localBestCost = lengths[ant];
-                    Array.Copy(paths[ant], localBestPath, paths[ant].Length);
+                    //lock(lockObject) {
+                        localBestCost = lengths[ant];
+                        Array.Copy(paths[ant], localBestPath, paths[ant].Length);
+                    //}
+                    
                 }
             });
 
-            // Update global best cost outside parallel region
-            lock (lockObject)
+
+            if (localBestCost < bestCost)
             {
-                if (localBestCost < bestCost)
-                {
-                    // Console.WriteLine($"Iteracja: {iteration}, Najlepszy koszt: {localBestCost}");
-                    bestCost = localBestCost;
-                    Array.Copy(localBestPath, bestPath, localBestPath.Length);
-                }
+                bestCost = localBestCost;
+                Array.Copy(localBestPath, bestPath, localBestPath.Length);
             }
 
-            // Update pheromones sequentially
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    pheromones[i, j] *= (1.0 - RHO);  // Evaporation
+                    pheromones[i, j] *= (1.0 - RHO);  
 
-            Parallel.For(0, NUM_ANTS, ant =>
+            for(int ant= 0; ant<NUM_ANTS; ant++) 
             {
                 for (int step = 0; step < size - 1; step++)
                 {
                     int from = paths[ant][step];
                     int to = paths[ant][step + 1];
-                    lock (lockObject)
-                    {
-                        pheromones[from, to] += Q / lengths[ant];
-                        pheromones[to, from] += Q / lengths[ant];
-                    }
+                    pheromones[from, to] += Q / lengths[ant];
+                    pheromones[to, from] += Q / lengths[ant];
+                    
                 }
 
                 int lastFrom = paths[ant][size - 1];
-                int lastTo = paths[ant][0];
-                lock (lockObject)
-                {
-                    pheromones[lastFrom, lastTo] += Q / lengths[ant];
-                    pheromones[lastTo, lastFrom] += Q / lengths[ant];
-                }
-            });
-        }
-
-        if (writeValues)
-        {
-            Console.WriteLine("Najlepszy koszt: " + bestCost + "/" + cvrp.OptimalValue);
-            Console.WriteLine("x" + (bestCost - cvrp.OptimalValue) / cvrp.OptimalValue);
-
-            CalculateCost(bestPath, distanceMatrix);
-
-
-            Console.Write("Najlepsza ścieżka:\n ");
-            Console.Write(string.Join(" ", bestPath));
-            if (bestPath[^1] != 0)
-                Console.WriteLine(" " + bestPath[0]);
+                int lastTo = paths[ant][0];        
+                pheromones[lastFrom, lastTo] += Q / lengths[ant];
+                pheromones[lastTo, lastFrom] += Q / lengths[ant];
+            }
         }
         return bestCost;
     }
@@ -478,7 +317,7 @@ public void AntColonyOptimizationWithTuning(CVRPInstance cvrp,
         int[] bestPath;
         double bestCost;
         this.AntColonyOptimizationPararrelv2(cvrp, selectedAlpha, selectedBeta, selectedRho, selectedQ,
-                                acoIterations, maxTimeACO: 0, out bestPath, out bestCost, writeValues: false);
+                                acoIterations, maxTimeACO: 0, out bestPath, out bestCost);
 
         // Define a reward measure; here we use the ratio (OptimalValue / bestCost)
         double reward = cvrp.OptimalValue / bestCost;

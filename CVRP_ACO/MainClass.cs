@@ -1,6 +1,7 @@
 ﻿using CVRP_ACO;
 using System;
 using System.Diagnostics;
+using System.Text;
 
 class MainClass
 {
@@ -15,6 +16,84 @@ class MainClass
     {
         Random random = new Random();
         Menu();
+    }
+
+    static void CompareExecutionTime()
+    {
+        string[] filenames = new string[] { "A-n44-k6.txt" , "A-n55-k9.txt" };//, "A-n63-k10.txt", "A-n69-k9.txt" , "A-n80-k10.txt" };
+        string outputfilename = "XD.tex";
+        string caption = "{Porównanie czasów działania algorytmów}";
+        string label = "{fig:czas-algorytmy}";
+        double alpha = 0.9, beta = 3.0, rho = 0.7, q = 10.0;
+        int maxTimeACO = 0, maxIterations = 10000;
+        StringBuilder chart = new StringBuilder();
+        StringBuilder x_coords = new StringBuilder("{");
+        foreach (var filename in filenames)
+        {
+            string name = filename.Split('.')[0];
+            name = name.Split("-")[1]+"-"+name.Split("-")[2];
+            x_coords.Append( name + ", ");
+        }
+        x_coords.Length -= 2;
+        x_coords.Append("}");
+        chart.Append("\\begin{figure}[H]\r\n" +
+            "\\centering\r\n    " +
+            "\\begin{tikzpicture}\r\n        " +
+            "\\begin{axis}[\r\n            " +
+            "ybar,\r\n            " +
+            "bar width=.5cm,\r\n            " +
+            "width=12cm,\r\n            " +
+            "height=7cm,\r\n            " +
+            "ymin=0,\r\n            " +
+            "ylabel={Czas [s]},\r\n            " +
+            $"symbolic x coords={x_coords},\r\n            " +
+            "xtick=data,\r\n            " +
+            "nodes near coords,\r\n           " +
+            "nodes near coords align={vertical},\r\n            " +
+            "enlarge x limits=0.25,\r\n        ]\r\n        "+
+            "legend style={at={(0.5,-0.15)}, anchor=north, legend columns=-1}, % legenda pod wykresem\r\n            " +
+            "legend cell align={left}"
+            );
+
+        chart.Append("\\addplot coordinates {");
+        foreach (var filename in filenames)
+        {
+            string name = filename.Split('.')[0];
+            name = name.Split("-")[1] + "-" + name.Split("-")[2];
+            chart.Append("(" + name + ",");
+            var cvrp = CVRPInstance.LoadFromFile(filename);
+            cvrp.createDistanceMatrix(cvrp.Nodes);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            antColony.AntColonyOptimization(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
+            stopwatch.Stop();
+            chart.Append($"{stopwatch.ElapsedMilliseconds})");
+        }
+        chart.Append("};\r\n" +
+            "\\addlegendentry{Jednowątkowo}");
+        chart.Append("\\addplot coordinates {");
+        foreach (var filename in filenames)
+        {
+            string name = filename.Split('.')[0];
+            name = name.Split("-")[1] + "-" + name.Split("-")[2];
+            chart.Append("(" + name + ",");
+            var cvrp = CVRPInstance.LoadFromFile(filename);
+            cvrp.createDistanceMatrix(cvrp.Nodes);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            antColony.AntColonyOptimizationPararrelv2(cvrp, alpha, beta, rho, q, maxIterations, maxTimeACO, out bestSolution, out bestCost);
+            stopwatch.Stop();
+            chart.Append($"{stopwatch.ElapsedMilliseconds})");
+        }
+        chart.Append("};\r\n" +
+            "\\addlegendentry{Wielowątkowo}");
+        chart.Append(
+            "\\end{axis}\r\n    " +
+            "\\end{tikzpicture}\r\n    " +
+            $"\\caption{caption}\r\n    " +
+            $"\\label{label}\r\n\\end"+"{figure}\r\n");
+        Console.WriteLine(chart);
+        File.WriteAllText(outputfilename, chart.ToString());
     }
 
     static void Menu()
@@ -34,7 +113,7 @@ class MainClass
             Console.WriteLine("\n----------------------------");
             Console.WriteLine("1. Wczytaj z pliku\n2. Wyświetl dane\n3. Algorytm mrówkowy");
             Console.WriteLine($"4. Liczba mrówek ({ants})\n5. Współczynnik parowania RHO ({rho})\n6. Stała feromonowa ({q})");
-            Console.WriteLine($"7. Maksymalny czas algorytmu ({maxTimeACO} s)\n8. Softmax\n9. KNN \n10.KNN 2 OPT \n11.Single Core Mrówkowy\n12.Algorytm mrówkowy z optymalizacją parametrów\n0. Zakończ");
+            Console.WriteLine($"7. Maksymalny czas algorytmu ({maxTimeACO} s)\n8. Softmax\n9. KNN \n10.KNN 2 OPT \n11.Single Core Mrówkowy\n12.Algorytm mrówkowy z optymalizacją parametrów\n13. Porównanie czasu wykonania różnych podejść\n0. Zakończ");
             int choice = int.Parse(Console.ReadLine());
 
             switch (choice)
@@ -181,7 +260,11 @@ class MainClass
                     Console.WriteLine($"\nCzas wykonania algorytmu wielowątkowego: {stopwatch.ElapsedMilliseconds} ms");
                 }
                     break;
-                
+                case 13:
+                    {
+                        CompareExecutionTime();
+                        break;
+                    }
                 default:
                     Console.WriteLine("Nieprawidłowa opcja.");
                     break;
