@@ -1,0 +1,44 @@
+A-n44-k6.txt
+Algorytm mrówkowy
+Progress: 100% [##################################################]
+
+Best Overall Parameters Found:
+Alpha: 1,1, Beta: 1,7000000000000002, Rho: 1, Q: 1
+Najlepszy koszt: 1013,0619498720965/937
+x0,08117604041845948
+
+A-n55-k9.txt
+Algorytm mrówkowy
+Progress: 100% [##################################################]
+
+Best Overall Parameters Found:
+Alpha: 2,4000000000000004, Beta: 2,6, Rho: 0,9500000000000001, Q: 200
+Najlepszy koszt: 1227,9783038437565/1073
+x0,14443457953751773
+
+A-n63-k10.txt
+Algorytm mrówkowy
+Progress: 100% [##################################################]
+
+Best Overall Parameters Found:
+Alpha: 1,8, Beta: 1,2000000000000002, Rho: 0,65, Q: 50
+Najlepszy koszt: 1507,3712833030697/1314
+x0,14716231606017482
+
+A-n69-k9.txt
+Algorytm mrówkowy
+Progress: 100% [##################################################]
+
+Best Overall Parameters Found:
+Alpha: 1,4000000000000001, Beta: 1,9000000000000001, Rho: 0,9, Q: 100
+Najlepszy koszt: 1342,229087689834/1159
+x0,1580923966262588
+
+A-n80-k10.txt
+Algorytm mrówkowy
+Progress: 100% [##################################################]
+
+Best Overall Parameters Found:
+Alpha: 1,9000000000000001, Beta: 1,5, Rho: 1, Q: 200
+Najlepszy koszt: 2033,3245953439352/1763
+x0,1533321584480631
