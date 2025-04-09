@@ -69,15 +69,6 @@ public class KnnCVRP
             routes.Add(route);
         }
 
-        // Output the solution
-        
-        Console.WriteLine("Najlepszy koszt: " + totalCost + "/" + cvrp.OptimalValue);
-        Console.WriteLine("x" + (totalCost - cvrp.OptimalValue) / cvrp.OptimalValue);
-        // for (int i = 0; i < routes.Count; i++)
-        // {
-        //     Console.WriteLine("Route " + (i + 1) + ": " + string.Join(" -> ", routes[i]));
-        // }
-
         return totalCost;
     }
 
@@ -158,14 +149,6 @@ public class KnnCVRP
                 routes.Add(route);
             }
         }
-
-        // // Output the final results.
-        Console.WriteLine("Najlepszy koszt: " + totalCost + "/" + cvrp.OptimalValue);
-        Console.WriteLine("x" + (totalCost - cvrp.OptimalValue) / cvrp.OptimalValue);
-        // for (int i = 0; i < routes.Count; i++)
-        // {
-        //     Console.WriteLine("Route " + (i + 1) + ": " + string.Join(" -> ", routes[i]));
-        // }
         return totalCost;
     }
 

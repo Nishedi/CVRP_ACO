@@ -62,6 +62,8 @@ public class AntColony
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
         out int[] bestPath, out double bestCost)
     {
+        bool timeStopCriterion = false;
+        if (maxTimeACO > 0) timeStopCriterion = true;
         double[,] distanceMatrix = cvrp.costMatrix;
         int size = cvrp.costMatrix.GetLength(0);
         int NUM_ANTS = size;
@@ -84,8 +86,10 @@ public class AntColony
         {
             paths[i] = new int[size * 2];
         }
-        
-        for (int iteration = 0; iteration < maxIterations; iteration++)
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int iteration = 0; (iteration < maxIterations && !timeStopCriterion) || (stopwatch.ElapsedMilliseconds < maxTimeACO*1000 && timeStopCriterion); iteration++)
         {
             for (int ant = 0; ant < NUM_ANTS; ant++)
             {
@@ -149,6 +153,8 @@ public class AntColony
         double ALPHA, double BETA, double RHO, double Q, int maxIterations, int maxTimeACO,
         out int[] bestPath, out double bestCost)
     {
+        bool timeStopCriterion = false;
+        if(maxTimeACO > 0) timeStopCriterion = true;
         double[,] distanceMatrix = cvrp.costMatrix;
         int size = cvrp.costMatrix.GetLength(0);
         int NUM_ANTS = size;
@@ -161,8 +167,9 @@ public class AntColony
                 pheromones[i, j] = 1.0;
 
         object lockObject = new object();
-        
-        for (int iteration = 0; iteration < maxIterations; iteration++)  // Sequential iterations
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int iteration = 0; (iteration < maxIterations && !timeStopCriterion)||(stopwatch.ElapsedMilliseconds<maxTimeACO*1000&&timeStopCriterion); iteration++)  
         {
             int[][] paths = new int[NUM_ANTS][];
             double[] lengths = new double[NUM_ANTS];

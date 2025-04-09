@@ -8,15 +8,15 @@
             height=7cm,
             ymin=0,
             ylabel={Czas [s]},
-            symbolic x coords={n44-k6, n55-k9},
+            symbolic x coords={n44-k6, n55-k9, n63-k10, n69-k9, n80-k10},
             xtick=data,
             nodes near coords,
            nodes near coords align={vertical},
             enlarge x limits=0.25,
         ]
         legend style={at={(0.5,-0.15)}, anchor=north, legend columns=-1}, % legenda pod wykresem
-            legend cell align={left}\addplot coordinates {(n44-k6,22854)(n55-k9,42464)};
-\addlegendentry{Jednowątkowo}\addplot coordinates {(n44-k6,6541)(n55-k9,10851)};
+            legend cell align={left}\addplot coordinates {(n44-k6,21140)(n55-k9,39169)(n63-k10,56015)(n69-k9,79501)(n80-k10,119094)};
+\addlegendentry{Jednowątkowo}\addplot coordinates {(n44-k6,3212)(n55-k9,4989)(n63-k10,7395)(n69-k9,10025)(n80-k10,13452)};
 \addlegendentry{Wielowątkowo}\end{axis}
     \end{tikzpicture}
     \caption{Porównanie czasów działania algorytmów}

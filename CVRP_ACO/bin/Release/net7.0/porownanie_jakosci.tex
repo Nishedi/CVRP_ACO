@@ -1,0 +1,30 @@
+\begin{figure}[H]
+\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar,
+            bar width=.7cm,
+            width=12cm,
+            height=7cm,
+            ymin=0,
+            ylabel={Czas [s]},
+            symbolic x coords={n44-k6, n55-k9, n63-k10, n69-k9, n80-k10},
+            xtick=data,
+            nodes near coords,
+           nodes near coords align={vertical},
+            enlarge x limits=0.25,
+        ]
+      legend pos=north west\r\n"   \addplot coordinates {(n44-k6,1030)(n55-k9,1241)(n63-k10,1607)(n69-k9,1363)(n80-k10,2145)};
+\addlegendentry{Jednowątkowo}
+\addplot coordinates {(n44-k6,1019)(n55-k9,1271)(n63-k10,1599)(n69-k9,1354)(n80-k10,2093)};
+\addlegendentry{Wielowątkowo}
+\addplot coordinates {(n44-k6,1329)(n55-k9,1499)(n63-k10,1933)(n69-k9,1577)(n80-k10,2255)};
+\addlegendentry{KNN}\addplot coordinates {(n44-k6,1263)(n55-k9,1471)(n63-k10,1856)(n69-k9,1506)(n80-k10,2176)};
+\addlegendentry{KNN 2 OPT}
+\addplot coordinates {(n44-k6,937)(n55-k9,1073)(n63-k10,1314)(n69-k9,1159)(n80-k10,1763)};
+\addlegendentry{Optymalnie}
+\end{axis}
+    \end{tikzpicture}
+    \caption{Porównanie jakości wyników generowanych przez zaimplementowane algorytmy}
+    \label{fig:jakosc-algorytmy}
+\end{figure}

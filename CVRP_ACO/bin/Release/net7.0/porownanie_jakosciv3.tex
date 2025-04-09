@@ -1,0 +1,30 @@
+\begin{figure}[H]
+\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            ybar,
+            bar width=.7cm,
+            width=12cm,
+            height=7cm,
+            ymin=0,
+            ylabel={Czas [s]},
+            symbolic x coords={n80-k10},
+            xtick=data,
+            nodes near coords,
+           nodes near coords align={vertical},
+            enlarge x limits=0.5,
+            legend pos=north west,
+legend style={at={(0.5,-0.15)}, anchor=north, legend columns=-1}]   \addplot coordinates {(n80-k10,1763)};
+\addlegendentry{Optymalnie}
+\addplot coordinates {(n80-k10,2092)};
+\addlegendentry{Wielowątkowo}
+\addplot coordinates {(n80-k10,2110)};
+\addlegendentry{Jednowątkowo}
+\addplot coordinates {(n80-k10,2255)};
+\addlegendentry{KNN 2 OPT}
+\addplot coordinates {(n80-k10,2255)};
+\addlegendentry{KNN}\end{axis}
+    \end{tikzpicture}
+    \caption{Porównanie jakości wyników generowanych przez zaimplementowane algorytmy}
+    \label{fig:jakosc-algorytmyv3}
+\end{figure}
