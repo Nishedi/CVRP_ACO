@@ -302,17 +302,22 @@ class MainClass
                     maxTimeACO = int.Parse(Console.ReadLine());
                     break;
                 case 8:
-                    string[] filenames2 = new string[] { "A-n44-k6.txt", "A-n55-k9.txt", "A-n63-k10.txt","A-n69-k9.txt", "A-n80-k10.txt"};
+                    var filenames2 = new[] 
+                    { 
+                        new { Filename= "A-n44-k6.txt",Time= 50}, 
+                        new { Filename= "A-n63-k10.txt", Time= 70 }, 
+                        new {Filename = "A-n80-k10.txt", Time= 90} 
+                    };
                     foreach (var filename in filenames2)
                     {
                         Console.WriteLine("\n" + filename);
-                        var cvrp = CVRPInstance.LoadFromFile(filename);
+                        var cvrp = CVRPInstance.LoadFromFile(filename.Filename);
                         cvrp.createDistanceMatrix(cvrp.Nodes);
                         Console.WriteLine("Algorytm mrówkowy");
                         Stopwatch stopwatch = new Stopwatch();
-
+                        ACO_Tuner aco_tuner = new ACO_Tuner();
                         stopwatch.Start();
-                        antColony.AntColonyOptimizationWithTuning(cvrp, 2000, 50, 0.5, 0.1);
+                        aco_tuner.AntColonyOptimizationWithTuning(cvrp, 1000, filename.Time, 0.5, 0.1);
                         stopwatch.Stop();
                     }
                     break;

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CVRP_ACO")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4c403834b708093c00d3dbacd78a674e5cb093b5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("CVRP_ACO")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CVRP_ACO")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

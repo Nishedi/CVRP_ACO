@@ -277,7 +277,7 @@ public class AntColony
     /// <param name="temperature">Temperature parameter for softmax (controls exploration/exploitation).</param>
     /// <param name="learningRate">Learning rate for updating candidate quality estimates.</param>
 public void AntColonyOptimizationWithTuning(CVRPInstance cvrp,
-    int tuningIterations, int acoIterations, double temperature, double learningRate)
+    int tuningIterations, int acoTime, double temperature, double learningRate)
 {
     // Define candidate sets for each parameter
     double[] candidateAlpha = Enumerable.Range(1, 25).Select(i => i * 0.1).ToArray();
@@ -324,7 +324,7 @@ public void AntColonyOptimizationWithTuning(CVRPInstance cvrp,
         int[] bestPath;
         double bestCost;
         this.AntColonyOptimizationPararrelv2(cvrp, selectedAlpha, selectedBeta, selectedRho, selectedQ,
-                                acoIterations, maxTimeACO: 0, out bestPath, out bestCost);
+                                0, maxTimeACO: acoTime, out bestPath, out bestCost);
 
         // Define a reward measure; here we use the ratio (OptimalValue / bestCost)
         double reward = cvrp.OptimalValue / bestCost;
