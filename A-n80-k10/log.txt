@@ -1,0 +1,8 @@
+{ Filename = A-n80-k10.txt, Time = 90 }
+Algorytm mrówkowy
+Progress: 100% [##################################################]
+
+Best Overall Parameters Found:
+Alpha: 1,2000000000000002, Beta: 1,7000000000000002, Rho: 1, Q: 300
+Najlepszy koszt: 1968,74185464215/1763
+x0,11669986082935337

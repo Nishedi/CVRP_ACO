@@ -1,0 +1,4 @@
+Best Overall Parameters Found:
+Alpha: 0,6000000000000001, Beta: 2,6, Rho: 1, Q: 50
+Najlepszy koszt: 981,7546757705356/937
+x0,04776379484582246
